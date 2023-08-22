@@ -34,7 +34,7 @@ const Page = () => {
             />
           </label>
           <label htmlFor="email" className="flex flex-col gap-3">
-            <span>Full Name</span>
+            <span>Email</span>
             <input
               type="email"
               name="email"

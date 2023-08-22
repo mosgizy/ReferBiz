@@ -26,7 +26,9 @@ const config: Config = {
       backgroundImage: {
         'focus-bg': 'linear-gradient(180deg, #4C6B29 0%, #638A35 100%);',
       },
-      backgroundColor: {},
+      backgroundColor: {
+        'background-blur':"rgba(0,0,0,0.2)"
+      },
       boxShadow: {
         'btn-shadow': '2px 2px 0px 0px #3A521F',
         'google': '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
