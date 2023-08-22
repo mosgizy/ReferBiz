@@ -7,6 +7,7 @@ import { FaTimes } from 'react-icons/fa';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import GetStartedBtn from './GetStartedBtn';
 
 const Nav = () => {
   const { status } = useSession();
@@ -26,22 +27,27 @@ const Nav = () => {
   return (
     <>
       <nav className="fixed w-full">
-        <div className="px-5 py-5 mt-4 mx-6 rounded-full bg-white flex justify-between items-center">
+        <div className="px-6 py-3 md:py-2 mt-4 mx-6 rounded-full bg-white flex justify-between items-center">
           <Link
             href="/"
             className="text-header text-lg font-bold cursor-pointer"
           >
             ReferBiz
           </Link>
-          <Image
-            onClick={toggleNavDrop}
-            src={hamburger}
-            alt=""
-            width={36}
-            height={36}
-            priority
-            className="cursor-pointer"
-          />
+          <div className="flex-center gap-5">
+            <Image
+              onClick={toggleNavDrop}
+              src={hamburger}
+              alt=""
+              width={36}
+              height={36}
+              priority
+              className="cursor-pointer"
+            />
+            <div className="hidden md:block">
+              <GetStartedBtn />
+            </div>
+          </div>
         </div>
       </nav>
       <div

@@ -1,33 +1,62 @@
 'use client';
 
-import { FaChevronDown, FaCopy } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaCopy } from 'react-icons/fa';
 import compShare from '/public/icons/camp-share.svg';
 import Image from 'next/image';
 import paymentShare from '/public/icons/pay-share.svg';
 import activityImage from '/public/images/activity.svg';
 import noteImage from '/public/icons/bank-note.svg';
 import linkImage from '/public/icons/link.svg';
-import { useState } from 'react';
+import logoutIcon from '/public/icons/logout.svg';
+import { useEffect, useState } from 'react';
 import { handleCopyToClipboard } from '@/utils/copyToClipboard';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const Page = () => {
-  const { status } = useSession();
   const router = useRouter();
   const [activity, setActivity] = useState(true);
+  const { status } = useSession();
+  const [logOutModal, setLogOutModal] = useState(false);
 
-  if (status === 'unauthenticated') {
-    router.push('/login');
-    return;
-  }
+  const handleModal = () => {
+    setLogOutModal((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    handleModal();
+    Cookies.remove('token');
+    signOut({ callbackUrl: '/login' });
+  };
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status]);
 
   return (
     <>
-      <section className="section text-left py-4 mb-20">
-        <h1 className="text-base text-header py-4 font-semibold flex-center gap-1">
-          <span>Clothing Business</span> <FaChevronDown />
-        </h1>
+      <section className="section text-left py-4 mb-20 relative">
+        <div className="">
+          <h1
+            onClick={handleModal}
+            className="text-base text-header py-4 font-semibold flex-center gap-1"
+          >
+            <span>Clothing Business</span>{' '}
+            {logOutModal ? <FaChevronUp /> : <FaChevronDown />}
+          </h1>
+          {logOutModal && (
+            <div
+              onClick={handleLogout}
+              className="flex-center gap-2 absolute right-0 w-full rounded-md font-medium bg-white px-3 py-2 shadow-google"
+            >
+              <Image src={logoutIcon} alt="" height={16} width={16} />
+              <span>Logout</span>
+            </div>
+          )}
+        </div>
         <div className="my-4 flex-center justify-between">
           <div className="flex flex-col gap-2">
             <div className="font-semibold text-2xl">₦ 0.00</div>

@@ -25,10 +25,10 @@
   }
 
   .section {
-    @apply max-w-[85%] mx-auto text-center;
+    @apply max-w-[85%] mx-auto text-center md:max-w-[96rem];
   }
 
   .btn {
-    @apply px-4 py-3 bg-primary-btn shadow-btn-shadow rounded-full;
+    @apply px-4 py-3 bg-primary-btn text-white shadow-btn-shadow rounded-full;
   }
 }

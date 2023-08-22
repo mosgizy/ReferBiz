@@ -1,38 +1,12 @@
 'use client';
 import Image from 'next/image';
 import registerImage from '/public/images/register-image.png';
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
 import LoginButton from '../../../components/SigninButton';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSignUp } from '@/hooks/useSignUp';
 
 const Page = () => {
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  const sendData = async () => {
-    try {
-      if (!session || !session?.user) return;
-      const response = await axios.post(
-        'https://referbiz-api.onrender.com/api/v1/auth/signup',
-        {
-          name: session?.user.name,
-          email: session?.user.email,
-        }
-      );
-
-      if (response.data.message === 'User already exists') {
-        router.push('/login');
-      }
-
-      if (response.data.message === 'Registration Successful') {
-        router.push('/dashboard');
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const sendData = useSignUp();
 
   sendData();
 

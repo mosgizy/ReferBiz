@@ -10,6 +10,7 @@ const Page = () => {
   const [select, setSelect] = useState(false);
   const [selectModal, setSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Select reward type');
+  const [name, setname] = useState('');
 
   const [amount, setAmount] = useState(0);
 
