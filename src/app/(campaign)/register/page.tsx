@@ -1,19 +1,15 @@
 'use client';
-
-import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import registerImage from '/public/images/register-image.png';
 import axios from 'axios';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import LoginButton from '../../../components/SigninButton';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const Page = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
-  console.log(session);
 
   const sendData = async () => {
     try {

@@ -27,7 +27,7 @@ const Page = () => {
 
   return (
     <>
-      <section className="section text-left py-4">
+      <section className="section text-left py-4 mb-20">
         <h1 className="text-base text-header py-4 font-semibold flex-center gap-1">
           <span>Clothing Business</span> <FaChevronDown />
         </h1>
@@ -163,7 +163,6 @@ const Page = () => {
           </div>
         </div>
       </section>
-      <Footer bottom={true} />
     </>
   );
 };
