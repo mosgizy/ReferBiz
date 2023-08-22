@@ -7,7 +7,6 @@ import paymentShare from '/public/icons/pay-share.svg';
 import activityImage from '/public/images/activity.svg';
 import noteImage from '/public/icons/bank-note.svg';
 import linkImage from '/public/icons/link.svg';
-import Footer from '@/components/Footer';
 import { useState } from 'react';
 import { handleCopyToClipboard } from '@/utils/copyToClipboard';
 import { useSession } from 'next-auth/react';
@@ -17,8 +16,6 @@ const Page = () => {
   const { status } = useSession();
   const router = useRouter();
   const [activity, setActivity] = useState(true);
-
-  console.log(status);
 
   if (status === 'unauthenticated') {
     router.push('/login');

@@ -22,8 +22,6 @@ const Page = () => {
         }
       );
 
-      console.log(response.data.message);
-
       if (response.data.message === 'User already exists') {
         router.push('/login');
       }

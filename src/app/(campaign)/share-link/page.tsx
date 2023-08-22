@@ -13,8 +13,8 @@ const Page = () => {
   const [modalState, setModalState] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
 
-  const handleModalState = (title: string) => {
-    setModalTitle(title);
+  const handleModalState = (title?: string) => {
+    setModalTitle(title as string);
     setModalState((prev) => !prev);
   };
 

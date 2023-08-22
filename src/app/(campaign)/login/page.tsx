@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import loginImage from '/public/images/login-image.png';
-import googleIcon from '/public/icons//google.svg';
 import SignInButton from '@/components/SigninButton';
 import Link from 'next/link';
 
