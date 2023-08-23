@@ -34,7 +34,7 @@ const Page = () => {
     if (status === 'unauthenticated') {
       router.push('/login');
     }
-  }, [status]);
+  }, [status, router]);
 
   return (
     <>

@@ -10,7 +10,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -43,7 +43,7 @@ const page = () => {
     };
 
     logIn();
-  }, [session]);
+  }, [session, router]);
 
   return (
     <>
@@ -76,4 +76,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
