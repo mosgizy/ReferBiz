@@ -7,16 +7,38 @@ import whatsappIcon from '/public/icons/whatsapp.svg';
 import instagramIcon from '/public/icons/instagram.svg';
 import { handleCopyToClipboard } from '@/utils/copyToClipboard';
 import Modal from '@/components/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const Page = () => {
   const [modalState, setModalState] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
+  const [shareLink, setShareLink] = useState('');
+  const router = useRouter();
 
   const handleModalState = (title?: string) => {
     setModalTitle(title as string);
     setModalState((prev) => !prev);
   };
+
+  useEffect(() => {
+    const getLink = async () => {
+      try {
+        const res = await axios.post(
+          'https://referbiz-api.onrender.com/api/v1/referrals/referrers',
+          {
+            token: Cookies.get('token'),
+          }
+        );
+      } catch (error: any) {
+        console.error(error);
+      }
+    };
+
+    getLink();
+  });
 
   return (
     <>
@@ -28,18 +50,14 @@ const Page = () => {
           Here’s your referral link
         </h1>
         <div className="flex-center justify-between border border-light-gray bg-fade-gray mt-4">
-          <span>https://referalbiz.com/clothing-busines.?daniel</span>
+          <span>{shareLink}</span>
           <Image
             src={copyIcon}
             alt=""
             height={16}
             width={16}
             className="cursor-pointer"
-            onClick={() =>
-              handleCopyToClipboard(
-                'https://referalbiz.com/clothing-busines.?daniel'
-              )
-            }
+            onClick={() => handleCopyToClipboard(shareLink)}
           />
         </div>
       </div>
@@ -68,7 +86,7 @@ const Page = () => {
         <Modal
           handleModal={handleModalState}
           title={modalTitle}
-          url={'https://referalbiz.com/clothing-busines.?daniel'}
+          url={shareLink}
         />
       )}
     </>

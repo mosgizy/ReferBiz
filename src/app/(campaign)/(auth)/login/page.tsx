@@ -14,7 +14,6 @@ const Page = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  console.log(session);
   const handleLogin = async () => {
     if (!session?.user) {
       signIn('google', { callback: '/dashboard' });

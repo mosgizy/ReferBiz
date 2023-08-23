@@ -1,16 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import infoIcon from '/public/icons/info-circle.svg';
-import Image from 'next/image';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useSession } from 'next-auth/react';
 
 const Page = () => {
   const [select, setSelect] = useState(false);
   const [selectModal, setSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Select reward type');
-  const [name, setname] = useState('');
+  const { data: session } = useSession();
+  const [name, setName] = useState('');
+  const [socialLink, setSocialLink] = useState('');
 
   const [amount, setAmount] = useState(0);
 
@@ -22,9 +25,25 @@ const Page = () => {
 
   const router = useRouter();
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    amount > 0 && router.push('/success');
+    try {
+      const res = await axios.post(
+        'https://referbiz-api.onrender.com/api/v1/campaign/new',
+        {
+          name: name,
+          description: socialLink,
+          campaignLink: `${process.env.ENVIRONMENT}/referral/${session?.user?.name}`,
+          token: Cookies.get('token'),
+        }
+      );
+      amount > 0 && router.push('/success');
+    } catch (error: any) {
+      console.error(error);
+      if (error.response.status === 401 || error.response.status === 500) {
+        router.push('/success');
+      }
+    }
   };
 
   return (
@@ -42,6 +61,8 @@ const Page = () => {
             <input
               type="text"
               name="socialLink"
+              value={socialLink}
+              onChange={(e) => setSocialLink(e.target.value)}
               placeholder="e.g. whatsapp business link, instagram page..."
               required
               className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"
@@ -49,12 +70,14 @@ const Page = () => {
           </label>
           <label htmlFor="key" className="flex flex-col gap-3">
             <div className="flex-center gap-1">
-              <span>Paystack secret key</span>
-              <Image src={infoIcon} alt="" width={16} height={16} />
+              <span>Paystack Link</span>
+              {/* <Image src={infoIcon} alt="" width={16} height={16} /> */}
             </div>
             <input
               type="text"
               name="key"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               placeholder="e.g. https://paystack.com/payment/3214"
               required
               className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"

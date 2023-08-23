@@ -10,15 +10,19 @@ import linkImage from '/public/icons/link.svg';
 import logoutIcon from '/public/icons/logout.svg';
 import { useEffect, useState } from 'react';
 import { handleCopyToClipboard } from '@/utils/copyToClipboard';
-import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import Cookies from 'js-cookie';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import axios from 'axios';
 
 const Page = () => {
-  const router = useRouter();
   const [activity, setActivity] = useState(true);
-  const { status } = useSession();
   const [logOutModal, setLogOutModal] = useState(false);
+  const [amount, setAmount] = useState(0);
+  const [referralCount, setReferralCount] = useState(0);
+  const [linkGenereatedCount, setLinkGenereatedCount] = useState(0);
+  const [linkGenereated, setLinkGenereated] = useState('');
+  const [paystack, setPaystack] = useState('');
 
   const handleModal = () => {
     setLogOutModal((prev) => !prev);
@@ -31,13 +35,29 @@ const Page = () => {
   };
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
-    }
-  }, [status, router]);
+    const fetchData = async () => {
+      try {
+        const res = await axios.post(
+          'https://referbiz-api.onrender.com/api/v1/dashboard',
+          {
+            token: Cookies.get('token'),
+          }
+        );
+        setReferralCount(res.data.referralsCount);
+        setLinkGenereatedCount(res.data.linksCount);
+        setLinkGenereated(res.data.amount.campaign_link);
+        setPaystack(res.data.amount.paystack_payment_link);
+        setAmount(res.data.amountPaid);
+      } catch (error: any) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <>
+    <ProtectedRoute>
       <section className="section text-left py-4 mb-20 relative">
         <div className="">
           <h1
@@ -59,15 +79,15 @@ const Page = () => {
         </div>
         <div className="my-4 flex-center justify-between">
           <div className="flex flex-col gap-2">
-            <div className="font-semibold text-2xl">₦ 0.00</div>
+            <div className="font-semibold text-2xl">₦ {amount}</div>
             <p className="text-xs text-text-color">Wallet balance</p>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="font-semibold text-2xl">0</div>
+            <div className="font-semibold text-2xl">{referralCount}</div>
             <p className="text-xs text-text-color">Referals</p>
           </div>
           <div className="flex flex-col gap-2">
-            <div className="font-semibold text-2xl">0</div>
+            <div className="font-semibold text-2xl">{linkGenereatedCount}</div>
             <p className="text-xs text-text-color">Links generated</p>
           </div>
         </div>
@@ -84,11 +104,7 @@ const Page = () => {
                 </p>
               </div>
               <Image
-                onClick={() =>
-                  handleCopyToClipboard(
-                    'https://referalbiz.com/clothing-busines.?daniel'
-                  )
-                }
+                onClick={() => handleCopyToClipboard(linkGenereated)}
                 src={compShare}
                 alt=""
                 width={64}
@@ -96,11 +112,7 @@ const Page = () => {
               />
             </div>
             <button
-              onClick={() =>
-                handleCopyToClipboard(
-                  'https://referalbiz.com/clothing-busines.?daniel'
-                )
-              }
+              onClick={() => handleCopyToClipboard(linkGenereated)}
               className="btn bg-green-500 flex-center justify-center gap-1 text-white w-full mt-4"
             >
               <FaCopy /> COPY LINK
@@ -118,11 +130,7 @@ const Page = () => {
                 </p>
               </div>
               <Image
-                onClick={() =>
-                  handleCopyToClipboard(
-                    'https://referalbiz.com/clothing-busines.?daniel'
-                  )
-                }
+                onClick={() => handleCopyToClipboard(paystack)}
                 src={paymentShare}
                 alt=""
                 width={64}
@@ -130,11 +138,7 @@ const Page = () => {
               />
             </div>
             <button
-              onClick={() =>
-                handleCopyToClipboard(
-                  'https://referalbiz.com/clothing-busines.?daniel'
-                )
-              }
+              onClick={() => handleCopyToClipboard(paystack)}
               className="btn flex-center justify-center gap-1 text-white w-full mt-4"
             >
               <FaCopy /> COPY LINK
@@ -189,7 +193,7 @@ const Page = () => {
           </div>
         </div>
       </section>
-    </>
+    </ProtectedRoute>
   );
 };
 

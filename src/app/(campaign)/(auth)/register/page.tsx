@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import registerImage from '/public/images/register-image.png';
-import LoginButton from '../../../components/SigninButton';
+import LoginButton from '../../../../components/SigninButton';
 import Link from 'next/link';
 import { useSignUp } from '@/hooks/useSignUp';
 

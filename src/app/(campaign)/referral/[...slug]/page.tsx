@@ -2,13 +2,29 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const Page = () => {
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const router = useRouter();
 
-  const handleSubmit = () => {
-    name !== '' && router.push('/share-link');
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        'https://referbiz-api.onrender.com/api/v1/referrals/createReferrer',
+        {
+          name: name,
+          email: email,
+          token: Cookies.get('token'),
+        }
+      );
+      name !== '' && email != '' && router.push('/referral/share-link');
+    } catch (error: any) {
+      console.error(error);
+    }
   };
 
   return (
@@ -38,6 +54,8 @@ const Page = () => {
             <input
               type="email"
               name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g. example@gmail.com"
               required
               className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"

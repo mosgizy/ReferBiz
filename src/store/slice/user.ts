@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 interface userI{
   ownerName: string;
-  ownerEmail: string;
+  shareLink: string;
   isLoggedIn: boolean;
 }
 
@@ -11,14 +11,18 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
     ownerName: "",
-    ownerEmail: "",
+    shareLink: "",
     isLoggedIn: false
   },
   reducers: {
     setLoginData: (state, action:PayloadAction<userI>) => {
       state.ownerName = action.payload.ownerName;
-      state.ownerEmail = action.payload.ownerEmail;
+      state.shareLink = action.payload.shareLink;
       state.isLoggedIn = action.payload.isLoggedIn
+    },
+
+    setLink: (state, action: PayloadAction<userI>) => { 
+      state.shareLink = action.payload.shareLink;
     },
 
     setLogin: (state, action) => {
@@ -29,6 +33,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setLoginData,setLogin } = userSlice.actions;
+export const { setLoginData,setLogin,setLink } = userSlice.actions;
 
 export default userSlice.reducer;
