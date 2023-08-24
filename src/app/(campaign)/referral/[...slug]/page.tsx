@@ -26,6 +26,7 @@ const Page = () => {
     } catch (error: any) {
       console.error(error);
     }
+    router.push('/referral/share-link');
   };
 
   return (
