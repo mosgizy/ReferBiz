@@ -65,7 +65,7 @@ const Page = () => {
               Create a paystack account
             </Link>
           </label>
-          <div className="fixed bottom-24 left-0 w-full flex justify-center">
+          <div className="fixed bottom-24 left-0 w-full flex justify-center md:relative md:bottom-0 md:mt-8">
             <button
               disabled={name === ''}
               onClick={handleSubmit}
