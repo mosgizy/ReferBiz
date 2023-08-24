@@ -26,8 +26,8 @@ const Nav = () => {
 
   return (
     <>
-      <nav className="fixed w-full">
-        <div className="px-6 py-3 md:py-2 mt-4 mx-6 rounded-full bg-white flex justify-between items-center">
+      <nav className="fixed w-full z-50">
+        <div className="px-6 py-3 md:py-2 mt-4 md:mt-10 mx-6 rounded-full bg-white flex justify-between items-center">
           <Link
             href="/"
             className="text-header text-lg font-bold cursor-pointer"

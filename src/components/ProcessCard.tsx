@@ -33,7 +33,7 @@ const ProcessCard = () => {
   };
 
   return (
-    <div className="flex flex-col gap-12 mt-14">
+    <div className="flex flex-col md:flex-row md:justify-between gap-12 mt-14">
       {Object.keys(cardDetails).map((card, index) => {
         const details = cardDetails[card];
         return (
@@ -42,9 +42,10 @@ const ProcessCard = () => {
               <Image
                 src={details.icon}
                 alt=""
-                height={200}
+                height={148}
                 width={250}
                 priority
+                className="h-[9.25rem]"
               />
             </div>
             <div className="mt-4">

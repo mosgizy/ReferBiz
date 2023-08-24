@@ -12,7 +12,7 @@ const Page = () => {
   const [selectModal, setSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Select reward type');
   const { data: session } = useSession();
-  const [name, setName] = useState('');
+  const [payStackLink, setPayStackLink] = useState('');
   const [socialLink, setSocialLink] = useState('');
 
   const [amount, setAmount] = useState(0);
@@ -31,7 +31,7 @@ const Page = () => {
       const res = await axios.post(
         'https://referbiz-api.onrender.com/api/v1/campaign/new',
         {
-          name: name,
+          name: payStackLink,
           description: socialLink,
           campaignLink: `${process.env.ENVIRONMENT}/referral/${session?.user?.name}`,
           token: Cookies.get('token'),
@@ -76,8 +76,8 @@ const Page = () => {
             <input
               type="text"
               name="key"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={payStackLink}
+              onChange={(e) => setPayStackLink(e.target.value)}
               placeholder="e.g. https://paystack.com/payment/3214"
               required
               className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"

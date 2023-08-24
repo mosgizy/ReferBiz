@@ -11,33 +11,35 @@ const Page = () => {
   sendData();
 
   return (
-    <>
-      <div className="flex-center justify-center">
+    <div className="md:flex-center">
+      <div className="flex-center justify-center flex-">
         <Image src={registerImage} alt="" height={500} width={250} priority />
       </div>
-      <div className="mt-16">
-        <h1 className="font-semibold text-3xl text-header">
-          Create your account
-        </h1>
-        <p className="text-text-color text-sm mt-2">
-          Note that after you create your account, you would be required to
-          supply your paystack payment link for a proper campaign setup
-        </p>
+      <div className="flex flex-col gap-12">
+        <div className="mt-16 flex flex-col">
+          <h1 className="font-semibold text-3xl text-header">
+            Create your account
+          </h1>
+          <p className="text-text-color text-sm mt-2">
+            Note that after you create your account, you would be required to
+            supply your paystack payment link for a proper campaign setup
+          </p>
+        </div>
+        <div className="[&>p]:text-text-color [&>p]:text-xs mt-8 flex flex-col gap-6">
+          <p>
+            By clicking the button below, you agree to our{' '}
+            <span className="text-log">terms and agreement</span>
+          </p>
+          <LoginButton providerId={``} />
+          <p>
+            Already have an account?{' '}
+            <Link href={'/login'} className="text-log">
+              Log in
+            </Link>
+          </p>
+        </div>
       </div>
-      <div className="[&>p]:text-text-color [&>p]:text-xs mt-8 flex flex-col gap-6">
-        <p>
-          By clicking the button below, you agree to our{' '}
-          <span className="text-log">terms and agreement</span>
-        </p>
-        <LoginButton providerId={``} />
-        <p>
-          Already have an account?{' '}
-          <Link href={'/login'} className="text-log">
-            Log in
-          </Link>
-        </p>
-      </div>
-    </>
+    </div>
   );
 };
 

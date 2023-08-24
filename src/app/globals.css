@@ -25,7 +25,7 @@
   }
 
   .section {
-    @apply max-w-[85%] mx-auto text-center md:max-w-[96rem];
+    @apply max-w-[85%] mx-auto text-center md:max-w-[96rem] md:px-10;
   }
 
   .btn {

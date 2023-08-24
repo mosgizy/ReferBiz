@@ -34,6 +34,8 @@ const Page = () => {
     signOut({ callbackUrl: '/login' });
   };
 
+  console.table(linkGenereated);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,8 +50,10 @@ const Page = () => {
         setLinkGenereated(res.data.amount.campaign_link);
         setPaystack(res.data.amount.paystack_payment_link);
         setAmount(res.data.amountPaid);
+
+        console.log(res.data);
       } catch (error: any) {
-        console.error(error);
+        console.error(error, 'hwllo');
       }
     };
 

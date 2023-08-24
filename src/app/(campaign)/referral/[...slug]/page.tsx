@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import Link from 'next/link';
 
 const Page = () => {
   const [name, setName] = useState('');
@@ -37,18 +38,6 @@ const Page = () => {
       </p>
       <div className="text-left mt-12">
         <form className="flex flex-col gap-3">
-          <label htmlFor="name" className="flex flex-col gap-3">
-            <span>Full Name</span>
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Daniel Osonuga"
-              required
-              className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"
-            />
-          </label>
           <label htmlFor="email" className="flex flex-col gap-3">
             <span>Email</span>
             <input
@@ -60,6 +49,21 @@ const Page = () => {
               required
               className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"
             />
+          </label>
+          <label htmlFor="paystack" className="flex flex-col gap-3">
+            <span>PayStack payment Link</span>
+            <input
+              type="paystack"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="https://paystack.com/payment/zrtaysiw"
+              required
+              className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"
+            />
+            <Link href="https://paystack.com/" className="text-log">
+              Create a paystack account
+            </Link>
           </label>
           <div className="fixed bottom-24 left-0 w-full flex justify-center">
             <button
