@@ -51,7 +51,7 @@ const Nav = () => {
         </div>
       </nav>
       <div
-        className={`absolute inset-0 px-6 py-4 bg-white transition-all ${
+        className={`absolute inset-0 px-6 py-4 bg-white transition-all z-50 ${
           navDrop ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
