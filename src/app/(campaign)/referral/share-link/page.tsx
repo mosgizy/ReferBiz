@@ -15,7 +15,7 @@ import Cookies from 'js-cookie';
 const Page = () => {
   const [modalState, setModalState] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
-  const [shareLink, setShareLink] = useState('');
+  const [shareLink, setShareLink] = useState('https://wa.me/+234812344567');
   const router = useRouter();
 
   const handleModalState = (title?: string) => {
