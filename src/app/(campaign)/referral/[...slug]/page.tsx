@@ -29,7 +29,7 @@ const Page = () => {
   };
 
   return (
-    <>
+    <div className="md:max-w-[24rem] md:mx-auto">
       <h1 className="text-header text-2xl font-semibold">
         Generate your referral link
       </h1>
@@ -78,7 +78,7 @@ const Page = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
