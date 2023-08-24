@@ -14,6 +14,7 @@ import { signOut } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import axios from 'axios';
+import Link from 'next/link';
 
 const Page = () => {
   const [activity, setActivity] = useState(true);
@@ -62,24 +63,32 @@ const Page = () => {
 
   return (
     <ProtectedRoute>
-      <section className="section text-left py-4 mb-20 relative">
-        <div className="">
-          <h1
-            onClick={handleModal}
-            className="text-base text-header py-4 font-semibold flex-center gap-1"
+      <section className="section text-left py-4 mb-20 relative md:max-w-[47rem] md:mx-auto">
+        <div className="flex-center justify-between">
+          <Link
+            href="/"
+            className="text-header text-lg font-bold cursor-pointer hidden md:block"
           >
-            <span>Clothing Business</span>{' '}
-            {logOutModal ? <FaChevronUp /> : <FaChevronDown />}
-          </h1>
-          {logOutModal && (
-            <div
-              onClick={handleLogout}
-              className="flex-center gap-2 absolute right-0 w-full rounded-md font-medium bg-white px-3 py-2 shadow-google"
+            ReferBiz
+          </Link>
+          <div className="">
+            <h1
+              onClick={handleModal}
+              className="text-base text-header py-4 font-semibold flex-center gap-1"
             >
-              <Image src={logoutIcon} alt="" height={16} width={16} />
-              <span>Logout</span>
-            </div>
-          )}
+              <span>Clothing Business</span>{' '}
+              {logOutModal ? <FaChevronUp /> : <FaChevronDown />}
+            </h1>
+            {logOutModal && (
+              <div
+                onClick={handleLogout}
+                className="flex-center gap-2 absolute right-0 w-full rounded-md font-medium bg-white px-3 py-2 shadow-google"
+              >
+                <Image src={logoutIcon} alt="" height={16} width={16} />
+                <span>Logout</span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="my-4 flex-center justify-between">
           <div className="flex flex-col gap-2">
@@ -122,7 +131,7 @@ const Page = () => {
               <FaCopy /> COPY LINK
             </button>
           </div>
-          <div className="px-5 py-4 shadow-google">
+          {/* <div className="px-5 py-4 shadow-google">
             <div className="flex justify-between gap-8">
               <div className="flex flex-col gap-1">
                 <h1 className="text-base text-header">
@@ -147,7 +156,7 @@ const Page = () => {
             >
               <FaCopy /> COPY LINK
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="mt-5">
           <div className="flex-center justify-between">
