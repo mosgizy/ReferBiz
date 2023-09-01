@@ -10,27 +10,35 @@ export const useSignUp = () => {
   const sendData = async () => {
     try {
       if (!session || !session?.user) return;
-      const response = await axios.post(
-        'https://referbiz-api.onrender.com/api/v1/auth/signup',
-        {
-          name: session?.user.name,
-          email: session?.user.email,
-        }
-      );
+      const user = {
+        name: session?.user?.name,
+        email: session?.user?.email,
+      };
 
-      if (response.status === 200) {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(user),
+      });
+
+      const data = await res.json();
+
+      console.log(data)
+
+      if (res.status === 200) {
         Cookies.set('token',
-          response.data.existingUser,
+          data.token,
           { sameSite: 'strict' }
         );
         
         router.push('/campaign');
       }
-    } catch (error:any) {
-      console.error(error);
-      if (error.response.status === 401) {
+
+      if (res.status === 409) {
         router.push('/login');
       }
+    } catch (error:any) {
+      console.error(error)
     }
   };
 

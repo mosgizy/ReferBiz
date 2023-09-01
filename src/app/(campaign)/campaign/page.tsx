@@ -13,10 +13,8 @@ const Page = () => {
   const [selectModal, setSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Select reward type');
   const { data: session } = useSession();
-  const [payStackLink, setPayStackLink] = useState('');
+  const [reward, setReward] = useState(0);
   const [socialLink, setSocialLink] = useState('');
-
-  const [amount, setAmount] = useState(0);
 
   const handleSelectValue = (value: string) => {
     setSelectedValue(value);
@@ -28,22 +26,27 @@ const Page = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    const campaignInfo = {
+      socialLink: socialLink,
+      rewardType: reward,
+    };
+
     try {
-      const res = await axios.post(
-        'https://referbiz-api.onrender.com/api/v1/campaign/new',
-        {
-          name: payStackLink,
-          description: socialLink,
-          campaignLink: `${process.env.ENVIRONMENT}/referral/${session?.user?.name}`,
-          token: Cookies.get('token'),
-        }
-      );
-      amount > 0 && router.push('/success');
+      const res = await fetch('/api/campaign/create', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+        body: JSON.stringify(campaignInfo),
+      });
+
+      console.log(await res.json());
+
+      reward > 0 && router.push('/success');
     } catch (error: any) {
       console.error(error);
-      if (error.response.status === 401 || error.response.status === 500) {
-        router.push('/success');
-      }
     }
   };
 
@@ -66,21 +69,6 @@ const Page = () => {
                 value={socialLink}
                 onChange={(e) => setSocialLink(e.target.value)}
                 placeholder="e.g. whatsapp business link, instagram page..."
-                required
-                className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"
-              />
-            </label>
-            <label htmlFor="key" className="flex flex-col gap-3">
-              <div className="flex-center gap-1">
-                <span>Paystack Link</span>
-                {/* <Image src={infoIcon} alt="" width={16} height={16} /> */}
-              </div>
-              <input
-                type="text"
-                name="key"
-                value={payStackLink}
-                onChange={(e) => setPayStackLink(e.target.value)}
-                placeholder="e.g. https://paystack.com/payment/3214"
                 required
                 className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"
               />
@@ -131,8 +119,8 @@ const Page = () => {
                 <input
                   type="number"
                   name="amount"
-                  value={amount}
-                  onChange={(e) => setAmount(Number(e.target.value))}
+                  value={reward}
+                  onChange={(e) => setReward(Number(e.target.value))}
                   placeholder="0.00"
                   required
                   className="px-4 py-3 rounded-full border border-[#EAECF0] text-header"
@@ -145,9 +133,9 @@ const Page = () => {
             <div className="fixed bottom-24 left-0 w-full flex justify-center md:relative md:bottom-0 md:mt-8">
               <button
                 onClick={handleSubmit}
-                disabled={amount <= 0}
+                disabled={reward <= 0}
                 className={`px-4 py-3 rounded-full mx-auto text-text-color w-[85%] text-sm cursor-not-allowed ${
-                  amount > 0 ? 'btn cursor-pointer' : 'bg-gray-200'
+                  reward > 0 ? 'btn cursor-pointer' : 'bg-gray-200'
                 }`}
               >
                 Create Campaign

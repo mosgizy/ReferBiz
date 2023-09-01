@@ -6,22 +6,23 @@ import type { NextRequest } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     await connectDb(process.env.MONGODB_URI as string)
-    const { email, password } = await req.json();
+    const { email, name} = await req.json();
 
-    if (!email || !password) { 
-      return NextResponse.json({message:"Please provide email and password"})
+    if (!email || !name) { 
+      return NextResponse.json({message:"Please provide email and password"},{status:400})
     }
 
     const user = await Auth.findOne({ email })
 
-    const isValidPassword = await user.comparePassword(password)
+    // const isValidPassword = await user.comparePassword(password)
     
-    if (!user || !isValidPassword) {
-      return NextResponse.json({message:"Invalid credentials, please provide a valid email and password"})
+    if (!user) {
+      return NextResponse.json({message:"Invalid credentials, please provide a valid email and password"},{status:401})
     }
 
-    return NextResponse.json({user:user.name,token:user.createToken()});
+    return NextResponse.json({name:user.name,token:user.createToken()});
   } catch (error) {
     console.error(error)
+    return NextResponse.json({message:"An error occur"},{status:408})
   }
 }

@@ -7,20 +7,24 @@ import { verifyToken } from "@/utils/verifyToken";
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     await connectDb(process.env.MONGODB_URI as string)
-    const payload = await verifyToken(req)
+    const payload = verifyToken(req)
 
     if (!payload) {
-      return NextResponse.json({message:"Invalid Authentication",status:"invalid"})
+      return NextResponse.json({message:"Invalid Authentication"},{status:401})
     }
 
     const userId = payload?.authId
 
-    const dashboard = await Dashboard.findOne({userDashboard:userId})
+    const dashboard = await Dashboard.findOne({ userDashboard: userId })
+
+    if (!dashboard) {
+      return NextResponse.json({ message: "User dashboard not available", status: "invalid" })
+    }
 
     return NextResponse.json({dashboard,status:"success"})
   } catch (error) {
     console.error(error);
-    return NextResponse.json({status:error})
+    return NextResponse.json({message:"Invalid Authentication",status:error})
   } 
 }
 

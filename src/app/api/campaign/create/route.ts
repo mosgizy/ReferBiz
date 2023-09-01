@@ -36,8 +36,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const referralCode = shortUUID.generate()
 
+    const linkGenerated = `${process.env.ENVIRONMENT}/referral/${referralCode}`
+
     const campaign = await Campaign.create({ socialLink, rewardType, createdBy,referralCode })
-    await Dashboard.create({linkGenerated:socialLink,userDashboard:createdBy,referralCode})
+    await Dashboard.create({socialLink,userDashboard:createdBy,referralCode,linkGenerated})
 
     if (!campaign) {
       return NextResponse.json({message:"Error creating campaign",status:"error"})

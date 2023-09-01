@@ -6,8 +6,8 @@ import type { NextRequest } from "next/server";
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     await connectDb(process.env.MONGODB_URI as string)
-    const { email, password, name } = await req.json();
-    const register = await Auth.create({ email, password, name });
+    const { email, name } = await req.json();
+    const register = await Auth.create({ email, name });
 
     return NextResponse.json({user:register.name,token:register.createToken()});
   } catch (error:any) {
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       return NextResponse.json({message: validationErrors});
     } 
     if (error.code === 11000 && error.keyPattern.email === 1) {
-      return NextResponse.json({message: "Email already exists"});
+      return NextResponse.json({message: "Email already exists"},{status:409});
     }
 
     return NextResponse.json({ message: error.name });

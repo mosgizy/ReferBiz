@@ -3,7 +3,6 @@
 import { FaChevronDown, FaChevronUp, FaCopy } from 'react-icons/fa';
 import compShare from '/public/icons/camp-share.svg';
 import Image from 'next/image';
-import paymentShare from '/public/icons/pay-share.svg';
 import activityImage from '/public/images/activity.svg';
 import noteImage from '/public/icons/bank-note.svg';
 import linkImage from '/public/icons/link.svg';
@@ -13,17 +12,24 @@ import { handleCopyToClipboard } from '@/utils/copyToClipboard';
 import { signOut } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import axios from 'axios';
 import Link from 'next/link';
 
+interface activitiesI {
+  email: string;
+  info: string;
+  name: string;
+  title: string;
+  _id: string;
+  createdAt: string;
+}
+
 const Page = () => {
-  const [activity, setActivity] = useState(true);
   const [logOutModal, setLogOutModal] = useState(false);
   const [amount, setAmount] = useState(0);
   const [referralCount, setReferralCount] = useState(0);
   const [linkGenereatedCount, setLinkGenereatedCount] = useState(0);
   const [linkGenereated, setLinkGenereated] = useState('');
-  const [paystack, setPaystack] = useState('');
+  const [activities, setActivities] = useState<activitiesI[]>();
 
   const handleModal = () => {
     setLogOutModal((prev) => !prev);
@@ -35,26 +41,42 @@ const Page = () => {
     signOut({ callbackUrl: '/login' });
   };
 
-  console.table(linkGenereated);
+  const convertTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleString().split(',')[1];
+
+    const hour = formattedDate.slice(0, 3);
+    const minute = formattedDate.substring(4, 6);
+
+    const isAM = Number(hour) < 12;
+
+    const twelveHourTime = isAM
+      ? `${hour}:${minute} ${'AM'}`
+      : `${Number(hour) - 12}:${minute} ${'PM'}`;
+
+    return twelveHourTime;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.post(
-          'https://referbiz-api.onrender.com/api/v1/dashboard',
-          {
-            token: Cookies.get('token'),
-          }
-        );
-        setReferralCount(res.data.referralsCount);
-        setLinkGenereatedCount(res.data.linksCount);
-        setLinkGenereated(res.data.amount.campaign_link);
-        setPaystack(res.data.amount.paystack_payment_link);
-        setAmount(res.data.amountPaid);
+        const res = await fetch('/api/dashboard', {
+          credentials: 'include',
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+          },
+        });
 
-        console.log(res.data);
+        const { dashboard } = await res.json();
+
+        setReferralCount(dashboard.referrals);
+        setLinkGenereatedCount(dashboard.linksCount);
+        setLinkGenereated(dashboard.linkGenerated);
+        setActivities(dashboard.activity);
+        // setPaystack(res.data.amount.paystack_payment_link);
+        setAmount(dashboard.walletBalance);
       } catch (error: any) {
-        console.error(error, 'hwllo');
+        console.error(error);
       }
     };
 
@@ -145,35 +167,62 @@ const Page = () => {
               </div>
             </div>
             <div>
-              {activity ? (
+              {activities ? (
                 <div className="mt-4 flex flex-col gap-4">
-                  <div className="flex-center justify-between">
-                    <div className="flex-center gap-3">
-                      <Image src={noteImage} alt="" height={48} width={48} />
-                      <div className="flex flex-col gap-1">
-                        <h1 className="text-header text-sm font-medium">
-                          Ayo paid using Daniel...
-                        </h1>
-                        <p className="text-text-color text-xs">
-                          Daniel . 8:30 PM
-                        </p>
+                  {activities.map((activity) => {
+                    if (activity.info !== 'link') {
+                      return (
+                        <div
+                          key={activity._id}
+                          className="flex-center justify-between"
+                        >
+                          <div className="flex-center gap-3">
+                            <Image
+                              src={noteImage}
+                              alt=""
+                              height={48}
+                              width={48}
+                            />
+                            <div className="flex flex-col gap-1">
+                              <h1 className="text-header text-sm font-medium">
+                                {activity.title}
+                              </h1>
+                              <p className="text-text-color text-xs">
+                                {activity.name} .{' '}
+                                {convertTime(activity.createdAt)}
+                              </p>
+                            </div>
+                          </div>
+                          <div>₦20,000.00</div>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <div
+                        key={activity._id}
+                        className="flex-center justify-between"
+                      >
+                        <div className="flex-center gap-3">
+                          <Image
+                            src={linkImage}
+                            alt=""
+                            height={48}
+                            width={48}
+                          />
+                          <div className="flex flex-col gap-1">
+                            <h1 className="text-header text-sm font-medium">
+                              {activity.title}
+                            </h1>
+                            <p className="text-text-color text-xs">
+                              {activity.name} .{' '}
+                              {convertTime(activity.createdAt)}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div>₦20,000.00</div>
-                  </div>
-                  <div className="flex-center justify-between">
-                    <div className="flex-center gap-3">
-                      <Image src={linkImage} alt="" height={48} width={48} />
-                      <div className="flex flex-col gap-1">
-                        <h1 className="text-header text-sm font-medium">
-                          Referal link generated
-                        </h1>
-                        <p className="text-text-color text-xs">
-                          Daniel . 8:30 PM
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="mt mt-12 flex justify-center">

@@ -21,6 +21,11 @@ const DashBoardSchema = new mongoose.Schema({
     required: true,
     minlength:10
   },
+  socialLink: {
+    type: String,
+    required: true,
+    minlength:10
+  },
   userDashboard: {
     type: mongoose.Types.ObjectId,
     ref: 'Auth',

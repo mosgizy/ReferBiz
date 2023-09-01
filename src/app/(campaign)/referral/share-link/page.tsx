@@ -8,37 +8,18 @@ import xIcon from '/public/icons/x.svg';
 import { handleCopyToClipboard } from '@/utils/copyToClipboard';
 import Modal from '@/components/Modal';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 const Page = () => {
   const [modalState, setModalState] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
-  const [shareLink, setShareLink] = useState('https://wa.me/+234812344567');
-  const router = useRouter();
+  const shareLink = useSelector((state: RootState) => state.user.shareLink);
 
   const handleModalState = (title?: string) => {
     setModalTitle(title as string);
     setModalState((prev) => !prev);
   };
-
-  useEffect(() => {
-    const getLink = async () => {
-      try {
-        const res = await axios.post(
-          'https://referbiz-api.onrender.com/api/v1/referrals/referrers',
-          {
-            token: Cookies.get('token'),
-          }
-        );
-      } catch (error: any) {
-        console.error(error);
-      }
-    };
-
-    getLink();
-  });
 
   return (
     <div className="md:max-w-[24rem] md:mx-auto">

@@ -12,37 +12,46 @@ import { useEffect } from 'react';
 
 const Page = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const handleLogin = async () => {
     if (!session?.user) {
       signIn('google', { callback: '/dashboard' });
+      await logIn();
       return;
     }
   };
 
-  useEffect(() => {
-    const logIn = async () => {
-      try {
-        const res = await axios.post(
-          'https://referbiz-api.onrender.com/api/v1/auth/login',
-          {
-            name: session?.user?.name,
-            email: session?.user?.email,
-          }
-        );
+  const logIn = async () => {
+    try {
+      const user = {
+        name: session?.user?.name,
+        email: session?.user?.email,
+      };
 
-        if (res.status === 200) {
-          Cookies.set('token', res.data.existingUser, { sameSite: 'strict' });
-          router.push('/dashboard');
-        }
-      } catch (error) {
-        console.error(error);
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(user),
+      });
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        Cookies.set('token', data.token, { sameSite: 'strict' });
+        router.push('/dashboard');
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    logIn();
-  }, [session, router]);
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (status === 'authenticated' && token) {
+      router.push('/dashboard');
+    }
+  }, [status, router]);
 
   return (
     <div className="md:flex-center md:gap-8 md:section">
@@ -76,7 +85,7 @@ const Page = () => {
           <p>
             Don’t have an account?{' '}
             <Link href={'/register'} className="text-log cursor-pointer">
-              Sign in
+              Sign up
             </Link>
           </p>
         </div>

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const alreadyExist = referralLink.activity.filter((act:any) => act.email === email)
     
     if (alreadyExist.length > 0) {
-      return NextResponse.json({ message: "Link already generated" })
+      return NextResponse.json({ message: "Link already generated" },{status:409})
     }
 
     const linksCount = referralLink.linksCount + 1
@@ -30,10 +30,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     
     await Dashboard.findOneAndUpdate({ referralCode: params.id }, { linksCount,activity }, { new: true, runValidators: true })
 
-    return NextResponse.json({message:"Link generated succesfuly",status:"success",referralCode:referralLink.linkGenerated})
+    return NextResponse.json({message:"Link generated succesfuly",status:"success",referralLink:referralLink.socialLink})
   } catch (error) {
     console.error(error)
-    return NextResponse.json({message:"Fail to generate link",status:"error"})
+    return NextResponse.json({message:"Fail to generate link",status:"error"},{status:400})
   }
 }
 
