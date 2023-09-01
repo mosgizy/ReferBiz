@@ -36,3 +36,5 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({message:"Fail to generate link",status:"error"})
   }
 }
+
+export const dynamic = 'force-dynamic'

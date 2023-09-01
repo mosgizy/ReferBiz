@@ -11,13 +11,15 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await connectDb(process.env.MONGODB_URI as string)
     const { socialLink, rewardType } = await req.json()
 
-    const payload = verifyToken(req)
+    const payload = await verifyToken(req)
 
     if (!payload) {
       return NextResponse.json({message:"Invalid Authentication",status:"invalid"})
     }
 
     const createdBy = payload?.authId
+
+    console.log(createdBy)
 
 
     if (!socialLink || !rewardType) {
@@ -29,7 +31,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const alreadyCreatedcampaign = await Campaign.findOne({ createdBy })
     
     if (alreadyCreatedcampaign) {
-      return NextResponse.json({message:"User already created campaign",status:"already created campaign"})
+      return NextResponse.json({message:"User already created campaign",status:"duplicate"})
     }
 
     const referralCode = shortUUID.generate()
@@ -48,3 +50,5 @@ export async function POST(req: NextRequest, res: NextResponse) {
     return NextResponse.json({ message: "Error creating campaign",status:"error" })
   }
 }
+
+export const dynamic = 'force-dynamic'

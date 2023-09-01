@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   try {
     await connectDb(process.env.MONGODB_URI as string)
 
-    const payload = verifyToken(req)
+    const payload = await verifyToken(req)
 
     if (!payload) {
       return NextResponse.json({message:"Invalid Authentication",status:"invalid"})
@@ -28,3 +28,5 @@ export async function GET(req: NextRequest) {
     console.error(error)
   }
 }
+
+export const dynamic = 'force-dynamic'

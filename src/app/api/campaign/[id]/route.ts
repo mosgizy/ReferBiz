@@ -8,7 +8,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   try {
     await connectDb(process.env.MONGODB_URI as string)
 
-    const payload = verifyToken(req)
+    const payload = await verifyToken(req)
 
     if (!payload) {
       return NextResponse.json({message:"Invalid Authentication",status:"invalid"})
@@ -34,7 +34,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     await connectDb(process.env.MONGODB_URI as string)
     const body = await req.json()
 
-    const payload = verifyToken(req)
+    const payload = await verifyToken(req)
 
     if (!payload) {
       return NextResponse.json({message:"Invalid Authentication",status:"invalid"})
@@ -68,7 +68,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   try {
     await connectDb(process.env.MONGODB_URI as string)
 
-    const payload = verifyToken(req)
+    const payload = await verifyToken(req)
 
     if (!payload) {
       return NextResponse.json({message:"Invalid Authentication",status:"invalid"})

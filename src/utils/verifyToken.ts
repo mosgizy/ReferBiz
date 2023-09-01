@@ -1,7 +1,7 @@
 import { JwtPayload, verify } from 'jsonwebtoken'
 import type { NextRequest } from "next/server";
 
-const verifyToken = (req: NextRequest) => {
+const verifyToken = async (req: NextRequest) => {
   const requestHeaders = new Headers(req.headers)
     const header = requestHeaders.get('authorization')
 
@@ -17,4 +17,5 @@ const verifyToken = (req: NextRequest) => {
     return payload
 }
 
-export {verifyToken}
+export { verifyToken }
+// export const dynamic = 'force-dynamic';
