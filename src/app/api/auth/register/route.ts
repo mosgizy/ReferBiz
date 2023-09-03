@@ -23,6 +23,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       return NextResponse.json({message: "Email already exists"},{status:409});
     }
 
-    return NextResponse.json({ message: error.name });
+    return NextResponse.json({ message: error });
   }
 }
