@@ -9,6 +9,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const { email, name } = await req.json();
     const register = await Auth.create({ email, name });
 
+    if (!register) {
+      return NextResponse.json({message:"Registration not successful",status:"failed"},{status:401})
+    }
+
     return NextResponse.json({user:register.name,token:register.createToken()});
   } catch (error:any) {
     if (error.name === "ValidationError") {
@@ -23,6 +27,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       return NextResponse.json({message: "Email already exists"},{status:409});
     }
 
-    return NextResponse.json({ message: error });
+    return NextResponse.json({message:"An error occured",status:"error"},{status:500})
   }
 }

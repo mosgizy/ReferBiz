@@ -19,13 +19,14 @@ export async function GET(req: NextRequest) {
     const campaign = await Campaign.find({createdBy}).sort('createdAt')
     
     if (!campaign) {
-      return NextResponse.json({message:"Campaing not found",status:"Invalid"})
+      return NextResponse.json({message:"Campaing not found",status:"Invalid"},{status:404})
     }
 
     return NextResponse.json({campaign,count:campaign.length})
     
   } catch (error) {
-    console.error(error)
+    // console.error(error)
+    return NextResponse.json({ message: "An error occured", status: "Invalid" },{status:500})
   }
 }
 

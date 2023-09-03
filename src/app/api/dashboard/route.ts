@@ -23,8 +23,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
     return NextResponse.json({dashboard,status:"success"})
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({message:"Invalid Authentication",status:error})
+    // console.error(error);
+    return NextResponse.json({message:"An error occured",status:error},{status:500})
   } 
 }
 

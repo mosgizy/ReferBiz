@@ -23,6 +23,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
     return NextResponse.json({name:user.name,token:user.createToken()});
   } catch (error) {
     console.error(error)
-    return NextResponse.json({message:"An error occur"},{status:408})
+    return NextResponse.json({message:"An error occur", status:"error"},{status:500})
   }
 }

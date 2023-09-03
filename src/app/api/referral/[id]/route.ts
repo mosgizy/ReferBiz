@@ -32,8 +32,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     return NextResponse.json({message:"Link generated succesfuly",status:"success",referralLink:referralLink.socialLink})
   } catch (error) {
-    console.error(error)
-    return NextResponse.json({message:"Fail to generate link",status:"error"},{status:400})
+    // console.error(error)
+    return NextResponse.json({message:"An error occured",status:error},{status:500})
   }
 }
 

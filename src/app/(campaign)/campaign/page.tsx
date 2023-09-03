@@ -42,8 +42,6 @@ const Page = () => {
         body: JSON.stringify(campaignInfo),
       });
 
-      console.log(await res.json());
-
       reward > 0 && router.push('/success');
     } catch (error: any) {
       console.error(error);

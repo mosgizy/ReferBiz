@@ -23,8 +23,6 @@ export const useSignUp = () => {
 
       const data = await res.json();
 
-      console.log(data)
-
       if (res.status === 200) {
         Cookies.set('token',
           data.token,

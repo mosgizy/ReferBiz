@@ -19,9 +19,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const createdBy = payload?.authId
 
-    console.log(createdBy)
-
-
     if (!socialLink || !rewardType) {
       return NextResponse.json({message:"Please provide a social link and reward type.",status:"invalid"})
     }
@@ -48,8 +45,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
     return NextResponse.json({message:"Campaign successfully created",status: "success"})
     
   } catch (error) {
-    console.error(error)
-    return NextResponse.json({ message: "Error creating campaign",status:"error" })
+    // console.error(error)
+    return NextResponse.json({message:"An error occured",status:error},{status:500})
   }
 }
 

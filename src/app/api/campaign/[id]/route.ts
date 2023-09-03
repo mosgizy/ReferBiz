@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({campaign})
     
   } catch (error) {
-    console.error(error)
+    return NextResponse.json({message:"An error occurred",status:"Invalid"},{status:500})
   }
 }
 
@@ -60,7 +60,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json({campaign,status:"sucess"})
     
   } catch (error) {
-    console.error(error)
+    return NextResponse.json({message:"An error occured",status:error},{status:500})
   }
 }
 
@@ -85,6 +85,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return NextResponse.json({status:"sucess"})
     
   } catch (error) {
-    console.error(error)
+    return NextResponse.json({message:"An error occured",status:error},{status:500})
   }
 }
