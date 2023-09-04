@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { notify } from '@/utils/copyToClipboard';
 
 export const useSignUp = () => {
   const { data: session } = useSession();
@@ -28,7 +29,7 @@ export const useSignUp = () => {
           data.token,
           { sameSite: 'strict' }
         );
-        
+        notify("Registration successful")
         router.push('/campaign');
       }
 

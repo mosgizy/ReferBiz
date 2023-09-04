@@ -9,17 +9,15 @@ import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
+import { notify } from '@/utils/copyToClipboard';
 
 const Page = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
 
   const handleLogin = async () => {
-    if (!session?.user) {
-      signIn('google', { callback: '/dashboard' });
-      await logIn();
-      return;
-    }
+    signIn('google', { callback: '/dashboard' });
+    logIn();
   };
 
   const logIn = async () => {
@@ -37,8 +35,11 @@ const Page = () => {
 
       const data = await res.json();
 
+      console.log(data, user);
+
       if (res.status === 200) {
         Cookies.set('token', data.token, { sameSite: 'strict' });
+        notify('Login successful');
         router.push('/dashboard');
       }
     } catch (error) {

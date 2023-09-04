@@ -9,10 +9,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const { email, name} = await req.json();
 
     if (!email || !name) { 
-      return NextResponse.json({message:"Please provide email and password"},{status:400})
+      return NextResponse.json({message:"No email provided",status:"invalid"},{status:400})
     }
 
     const user = await Auth.findOne({ email })
+    // console.log("hello",user.createToken())
 
     // const isValidPassword = await user.comparePassword(password)
     

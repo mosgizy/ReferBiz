@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 
 const notify = (text:string) =>
   toast(text, {
-    position: 'bottom-center',
+    position: 'bottom-right',
   });
 
 const handleCopyToClipboard = (link:string) => {
@@ -11,4 +11,4 @@ const handleCopyToClipboard = (link:string) => {
     .catch((err) => notify('Failed to copy to clipboard'));
 };
 
-export {handleCopyToClipboard}
+export {handleCopyToClipboard,notify}

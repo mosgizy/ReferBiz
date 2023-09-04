@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useSession } from 'next-auth/react';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -12,7 +11,6 @@ const Page = () => {
   const [select, setSelect] = useState(false);
   const [selectModal, setSelectModal] = useState(false);
   const [selectedValue, setSelectedValue] = useState('Select reward type');
-  const { data: session } = useSession();
   const [reward, setReward] = useState(0);
   const [socialLink, setSocialLink] = useState('');
 
@@ -42,7 +40,7 @@ const Page = () => {
         body: JSON.stringify(campaignInfo),
       });
 
-      reward > 0 && router.push('/success');
+      reward > 0 && res.status === 200 && router.push('/success');
     } catch (error: any) {
       console.error(error);
     }

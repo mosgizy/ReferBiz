@@ -1,18 +1,23 @@
-import { useEffect, useState } from 'react';
-import { signOut, useSession } from 'next-auth/react';
+'use client';
+
+import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import Loader from './Loader';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { status } = useSession();
+  const token = Cookies.get('token');
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (status !== 'authenticated' && !token) {
       router.push('/login');
     }
-  }, [status, router]);
+  }, [status, router, token]);
 
-  return <>{children}</>;
+  return status !== 'authenticated' && !token ? <Loader /> : <>{children}</>;
 };
 
 export default ProtectedRoute;
