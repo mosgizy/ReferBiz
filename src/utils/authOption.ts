@@ -12,7 +12,6 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt' as SessionStrategy,
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug:true,
   pages: {
     // signIn: '/register',
     // error:'http://localhost:3000/generate-link'

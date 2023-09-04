@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import loginImage from '/public/images/login-image.png';
 import Link from 'next/link';
-import axios from 'axios';
 import googleIcon from '/public/icons//google.svg';
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
@@ -17,7 +16,6 @@ const Page = () => {
 
   const handleLogin = async () => {
     signIn('google', { callback: '/dashboard' });
-    logIn();
   };
 
   const logIn = async () => {
@@ -35,8 +33,6 @@ const Page = () => {
 
       const data = await res.json();
 
-      console.log(data, user);
-
       if (res.status === 200) {
         Cookies.set('token', data.token, { sameSite: 'strict' });
         notify('Login successful');
@@ -48,10 +44,11 @@ const Page = () => {
   };
 
   useEffect(() => {
-    const token = Cookies.get('token');
-    if (status === 'authenticated' && token) {
-      router.push('/dashboard');
+    if (status === 'authenticated') {
+      logIn();
     }
+
+    //eslint-disable-next-line
   }, [status, router]);
 
   return (
