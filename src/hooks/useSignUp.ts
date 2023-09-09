@@ -22,13 +22,13 @@ export const useSignUp = () => {
         body: JSON.stringify(user),
       });
 
-      const data = await res.json();
+      // const data = await res.json();
 
       if (res.status === 200) {
-        Cookies.set('token',
-          data.token,
-          { sameSite: 'strict' }
-        );
+        // Cookies.set('token',
+        //   data.token,
+        //   { sameSite: 'strict' }
+        // );
         notify("Registration successful")
         router.push('/campaign');
       }

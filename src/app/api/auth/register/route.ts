@@ -13,7 +13,18 @@ export async function POST(req: NextRequest, res: NextResponse) {
       return NextResponse.json({message:"Registration not successful",status:"failed"},{status:401})
     }
 
-    return NextResponse.json({user:register.name,token:register.createToken()});
+    const response = NextResponse.json({ user: register.name});
+    
+    response.cookies.set({
+        name: "token",
+        value: register.createToken(),
+        maxAge: 60*60*24,
+        httpOnly: true,
+        sameSite: "strict",
+    })
+    
+    return response
+
   } catch (error:any) {
     if (error.name === "ValidationError") {
       const validationErrors = [];

@@ -11,6 +11,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { status } = useSession();
   const token = Cookies.get('token');
 
+  //todo: use httpOnly token to validate token for protected routes
+
   useEffect(() => {
     if (status !== 'authenticated' && !token) {
       router.push('/login');

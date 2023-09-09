@@ -6,7 +6,6 @@ import Link from 'next/link';
 import googleIcon from '/public/icons//google.svg';
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
-import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { notify } from '@/utils/copyToClipboard';
 
@@ -31,10 +30,7 @@ const Page = () => {
         body: JSON.stringify(user),
       });
 
-      const data = await res.json();
-
       if (res.status === 200) {
-        Cookies.set('token', data.token, { sameSite: 'strict' });
         notify('Login successful');
         router.push('/dashboard');
       }

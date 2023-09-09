@@ -28,9 +28,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     
     const activity = [...referralLink.activity,...info]
     
-    await Dashboard.findOneAndUpdate({ referralCode: params.id }, { linksCount,activity }, { new: true, runValidators: true })
+    await Dashboard.findOneAndUpdate({ referralCode: params.id }, { linksCount, activity }, { new: true, runValidators: true })
 
-    return NextResponse.json({message:"Link generated succesfuly",status:"success",referralLink:referralLink.socialLink})
+    return NextResponse.json({message:"Link generated succesfuly",status:"success",referralLink:referralLink.referLink})
   } catch (error) {
     // console.error(error)
     return NextResponse.json({message:"An error occured",status:error},{status:500})

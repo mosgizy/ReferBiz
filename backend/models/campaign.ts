@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
 
-const CampaignSchema = new mongoose.Schema({
+interface campaignI{
+  socialLink: string;
+  rewardType: number;
+  referralCode: string;
+  createdBy:object;
+}
+
+const CampaignSchema = new mongoose.Schema<campaignI>({
   socialLink: {
     type: String,
     required: [true, "Please provide a social link"],

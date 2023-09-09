@@ -1,6 +1,27 @@
 import mongoose from "mongoose";
 
-const DashBoardSchema = new mongoose.Schema({
+interface dashboardI{
+  walletBalance: number;
+  referrals: number;
+  linksCount: number;
+  linkGenerated: string;
+  referLink: string;
+  socialLink: string;
+  userDashboard: object;
+  referralCode: string;
+  activity: activityI[];
+}
+
+interface activityI{
+  name: string;
+  title: string;
+  email: string;
+  info: string;
+  createdAt: Date;
+  amount: number;
+}
+
+const DashBoardSchema = new mongoose.Schema<dashboardI>({
   walletBalance: {
     type: Number,
     required: true,
@@ -17,6 +38,11 @@ const DashBoardSchema = new mongoose.Schema({
     default:0
   },
   linkGenerated: {
+    type: String,
+    required: true,
+    minlength:10
+  },
+  referLink: {
     type: String,
     required: true,
     minlength:10
